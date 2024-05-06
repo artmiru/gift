@@ -39,33 +39,34 @@ const decrement = () => {
 </script>
 
 <template>
-  <section id="gift">
+  <section id="gift" class="py-10">
     <div class="sm:container sm:mx-auto sm:w-10/12">
-
-      <h1 class="text-center text-5xl font-sans uppercase mb-2">Подарочный сертификат</h1>
-      <h2 class="text-center text-3xl font-sans uppercase mb-5">на мастер-класс живописи</h2>
+      <h1 class="text-center text-5xl font-sans uppercase mb-3">Подарочный сертификат</h1>
+      <h2 class="text-center text-3xl font-sans uppercase mb-10">на мастер-класс живописи</h2>
       <div class="grid sm:grid-cols-12">
-        <div class="sm:col-span-6"></div>
-        <div class="sm:col-span-6">
-          <form class="bg-stone-50 border sm:rounded-lg">
-            <div class="px-8 py-5">
-              <h4 class="sm:text-2xl sm:font-medium sm:mb-2 text-2xl font-medium mb-2">Для кого сертификат</h4>
+        <div class="sm:col-span-7">
+
+        </div>
+        <div class="sm:col-span-5">
+          <form class="bg-stone-50 border sm:rounded-lg w-screen sm:max-w-md">
+            <div class="sm:px-8 sm:py-5 p-5">
+              <h4 class="sm:text-2xl sm:font-medium sm:mb-2 text-xl font-medium mb-1">Для кого сертификат</h4>
               <p class="sm:leading-tight mb-3">Будет написано на сертификате, например, «Для Анастасии Аникиной» или
                 «Для
                 Алексея».</p>
               <input type="text"
                 class="focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:p-3 sm:border sm:rounded-lg sm:w-full sm:mb-3 w-full p-3 border rounded-lg text-lg mb-3"
                 id="recipientName" placeholder="Фамилия Имя" v-model="recipientName">
-              <div class="flex space-x-3 text-center justify-around">
+              <div class="flex text-center justify-evenly">
                 <div class="sm:w-6/12">
                   <h4 class="mb-3 text-lg font-medium">Стоимость</h4>
-                  <span class="text-5xl leading-12">{{ totalPrice }}</span> <span
-                    class="text-2xl leading-12 text-stone-600">₽</span>
+                  <span class="leading-12 whitespace-nowrap text-5xl leading-none flex justify-center items-end">{{
+                    totalPrice }}<span class="text-2xl leading-12 text-stone-600 ml-1">₽</span></span>
                 </div>
                 <div class="sm:w-6/12 sm:flex sm:flex-col">
                   <h4 class="mb-3 text-lg font-medium">Количество</h4>
                   <div class="flex self-center">
-                    <button class="p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 rounded-l-lg h-14 w-14"
+                    <button class="p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 rounded-l-lg h-12 w-12"
                       type="button" @click="decrement" :disabled="qnt <= 1">
                       <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -74,9 +75,9 @@ const decrement = () => {
                       </svg>
                     </button>
                     <input type="tel"
-                      class="p-1 text-4xl text-center border-t border-b border-stone-200 bg-white focus:outline-none h-14 w-14"
+                      class="p-1 text-4xl text-center border-t border-b border-stone-200 bg-white focus:outline-none h-12 w-12"
                       v-model="qnt" readonly />
-                    <button class="rounded-r-lg p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 h-14 w-14"
+                    <button class="rounded-r-lg p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 h-12 w-12"
                       type="button" @click="increment" :disabled="qnt >= 4">
                       <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -88,70 +89,57 @@ const decrement = () => {
                 </div>
               </div>
             </div>
-            <div class="ratio-a6 bg-image mx-auto">
-              <div class="content">
-                <div class="ms-3 mt-2">
-                  <div class="fs-2 lh-1 lobster text-shadow title">
-                    Подарочный сертификат
-                  </div>
-                  <div class="fs-4 lh-1 lobster subtitle text-shadow">
-                    {{ certificateSubTitle }}
-                  </div>
+            <div class="ratio-a6 bg-image mx-auto border-y mt-5 mb-2">
+              <div class="content flex flex-col justify-between py-2">
+                <div class="px-6 lobster text-shadow flex flex-col">
+                  <span class="text-2xl">Подарочный сертификат</span>
+                  <span class="text-xl -mt-1">{{ certificateSubTitle }}</span>
                 </div>
-                <div class="d-flex fs-1 justify-content-center lh-1 px-4">
-                  <div class="cert-name lobster text-shadow text-center">
-                    {{ recipientName }}
+                <div
+                  class="lobster text-shadow text-center text-3xl sm:text-4xl leading-tight flex self-center w-10/12 mt-2 mb-3 sm:my-0 overflow-hidden line-clamp-3">
+                  {{ recipientName }}</div>
+                <div class="flex flex-col text-sm items-center">
+                  <div class="w-7/12 leading-none whitespace-nowrap">
+                    <div class="font-medium">Студия живописи «АртМир»</div>
+                    <div class="font-medium">Запись на сайте: artmir.ru/mk</div>
+                    <div>Телефон: 907-64-49</div>
+                    <div class="py-1">Действителен до: <b>{{ certificateExpireDate }}</b></div>
                   </div>
+                  <div class="text-center font-bold text-2xl leading-none mb-3 sm:text-3xl">№ {{ certificateNum }}</div>
                 </div>
-                <div class="d-flex flex-column">
-                  <div class="bg-opacity-75 bg-white mb-2 mx-auto px-1 rounded-3"
-                    style="font-size: 0.9rem; line-height: 1rem; width: 290px;">
-                    <div class="fw-medium fs-6 mb-1">
-                      Студия живописи «АртМир»
-                    </div>
-                    <div>
-                      <span class="fw-medium">Запись на сайте: artmir.ru/mk</span>
-                      <br />
-                      Телефон: 907-64-49
-                    </div>
-                    <div class="d-flex flex-row">
-                      <span class="align-self-center lh-sm me-1 text-end">Действителен до:
-                      </span>
-                      <span class="align-self-center d-flex fw-medium lh-1">{{ certificateExpireDate }}</span>
-                    </div>
-                  </div>
-                  <div class="d-flex flex-row justify-content-evenly mb-3 px-2">
-                    <div class="align-self-center bg-opacity-75 bg-white d-flex fs-3 fw-bold lh-1 rounded-2 pe-1 mb-1">
-                      № {{ certificateNum }}</div>
-                  </div>
-                </div>
+
               </div>
             </div>
-            <div class="px-4 mb-3">
-              <div class="row g-3">
-                <h5 class="mb-0">Данные покупателя</h5>
-                <p class="mb-0">
+            <div class="p-5">
+              <div class="">
+                <h5 class="text-lg mb-1 font-medium">Данные покупателя</h5>
+                <p class="leading-tight mb-3">
                   Напишите адрес электронной почты, на него автоматически будет отправлен сертификат сразу после оплаты.
                 </p>
-                <div class="col-sm-6">
-                  <div class="form-floating">
-                    <input type="email" class="form-control" id="bayerEmail" placeholder="Email" v-model="bayerEmail">
-                    <label for="bayerEmail">Напишите Email</label>
+                <div class="flex flex-col space-y-3 sm:flex-row sm:flex sm:space-y-0 sm:space-x-3 sm:mb-3">
+                  <div>
+                    <label for="bayerEmail" class="font-medium flex mb-1">Напишите Email:</label>
+                    <input type="email"
+                      class="w-full p-2 border rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      id="bayerEmail" placeholder="info@mail.ru" v-model="bayerEmail">
+                  </div>
+                  <div>
+                    <label for="bayerPhone" class="font-medium flex mb-1">Напишите телефон:</label>
+                    <input type="tel"
+                      class="w-full p-2 border rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      id="bayerPhone" v-model="phoneNumber" placeholder="+79219213211" />
                   </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="form-floating">
-                    <input type="tel" class="form-control" id="bayerPhone" v-model="phoneNumber" />
-                    <label for="bayerPhone">Номер телефона</label>
-                  </div>
-                </div>
-                <p class="mb-0">
+                <p class="mb-0 leading-tight sm:mb-5">
                   Нажимая кнопку "Оплатить", вы соглашаетесь с <a href="#">политикой конфиденциальности</a>.
                 </p>
-                <div class="col-12 text-center">
-                  <button type="button" class="btn btn-lg btn-danger my-3">Оплатить {{ totalPrice }} ₽</button>
+                <div class="text-center">
+                  <button type="button"
+                    class="btn btn-lg btn-danger hover:bg-red-700 bg-red-600 text-white rounded text-lg font-medium px-10 py-3 mt-3 mb-10">Оплатить
+                    {{ totalPrice }} ₽
+                  </button>
                 </div>
-                <div class="mt-4 align-content-center d-flex justify-content-center text-center">
+                <div class="flex justify-center mb-5">
                   <img style="
 								max-height: 24px;
 								" src="https://artmir.ru/img/mir-logo.svg" alt="логотип платежной системы" class="img-fluid me-3">
@@ -178,6 +166,8 @@ const decrement = () => {
       </div>
     </div>
   </section>
+  <br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br>
 </template>
 
 <style>
