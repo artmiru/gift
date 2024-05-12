@@ -1,54 +1,12 @@
-<script setup>
-import { ref, computed } from 'vue';
-import PhoneInput from './form_fields/PhoneInput.vue';
-
-const qnt = ref(1);
-const recipientName = ref('Для Ярошенко Евсея Олеговича');
-const bayerEmail = ref('');
-const unitPrice = ref(3400);
-const certificateNum = ref(123456);
-
-const certificateSubTitle = computed(() =>
-  qnt.value === 1 ? 'на мастер-класс живописи' : `на ${qnt.value} мастер-класса живописи`
-);
-
-const totalPrice = computed(() => qnt.value * unitPrice.value);
-
-const certificateExpireDate = computed(() => {
-  const expireDate = new Date(new Date().setMonth(new Date().getMonth() + 3));
-  const day = expireDate.getDate().toString().padStart(2, '0');
-  const month = (expireDate.getMonth() + 1).toString().padStart(2, '0');
-  const year = expireDate.getFullYear();
-  return `${day}.${month}.${year}`;
-});
-
-// const isValidEmail = email => {
-//   const emailRegex = /^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
-//   return emailRegex.test(email);
-// };
-
-// const isEmailValid = computed(() => isValidEmail(bayerEmail.value));
-
-const increment = () => {
-  if (qnt.value < 4) qnt.value++;
-};
-
-const decrement = () => {
-  if (qnt.value > 1) qnt.value--;
-};
-</script>
-
 <template>
-
   <form class="bg-stone-50 border sm:rounded-lg w-screen sm:max-w-md">
     <div class="sm:px-8 sm:py-5 p-5">
       <h4 class="sm:text-2xl sm:font-medium sm:mb-2 text-xl font-medium mb-1">Для кого сертификат</h4>
       <p class="sm:leading-tight mb-3">Будет написано на сертификате, например, «Для Анастасии Аникиной» или
         «Для
         Алексея».</p>
-      <input type="text"
-        class="focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:p-3 sm:border sm:rounded-lg sm:w-full sm:mb-3 w-full p-3 border rounded-lg text-lg mb-3"
-        id="recipientName" placeholder="Фамилия Имя" v-model="recipientName">
+      <input type="text" v-model="state.recipientName" placeholder="Фамилия Имя"
+        class="focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:p-3 sm:border sm:rounded-lg sm:w-full sm:mb-3 w-full p-3 border rounded-lg text-lg mb-3">
       <div class="flex text-center justify-evenly">
         <div class="sm:w-6/12">
           <h4 class="mb-3 text-lg font-medium">Стоимость</h4>
@@ -58,19 +16,19 @@ const decrement = () => {
         <div class="sm:w-6/12 sm:flex sm:flex-col">
           <h4 class="mb-3 text-lg font-medium">Количество</h4>
           <div class="flex self-center">
-            <button class="p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 rounded-l-lg h-12 w-12" type="button"
-              @click="decrement" :disabled="qnt <= 1">
+            <button @click="updateQuantity(false)" :disabled="state.qnt <= 1"
+              class="p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 rounded-l-lg h-12 w-12">
               <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M5 12h14" />
               </svg>
             </button>
-            <input type="tel"
-              class="p-1 text-4xl text-center border-t border-b border-stone-200 bg-white focus:outline-none h-12 w-12"
-              v-model="qnt" readonly />
-            <button class="rounded-r-lg p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 h-12 w-12" type="button"
-              @click="increment" :disabled="qnt >= 4">
+            <input type="tel" v-model="state.qnt" readonly
+              class="p-1 text-4xl text-center border-t border-b border-stone-200 bg-white focus:outline-none h-12 w-12" />
+
+            <button @click="updateQuantity(true)" :disabled="state.qnt >= 4" class="rounded-r-lg p-2 bg-gray-300
+              text-gray-800 disabled:bg-gray-200 h-12 w-12" type="button">
               <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -89,7 +47,7 @@ const decrement = () => {
         </div>
         <div
           class="lobster text-shadow text-center text-3xl sm:text-4xl leading-tight flex self-center w-10/12 mt-2 mb-3 sm:my-0 overflow-hidden line-clamp-3">
-          {{ recipientName }}</div>
+          {{ state.recipientName }}</div>
         <div class="flex flex-col text-sm items-center">
           <div class="w-7/12 leading-none whitespace-nowrap">
             <div class="font-medium">Студия живописи «АртМир»</div>
@@ -97,7 +55,7 @@ const decrement = () => {
             <div>Телефон: 907-64-49</div>
             <div class="py-1">Действителен до: <b>{{ certificateExpireDate }}</b></div>
           </div>
-          <div class="text-center font-bold text-2xl leading-none mb-3 sm:text-3xl">№ {{ certificateNum }}</div>
+          <div class="text-center font-bold text-2xl leading-none mb-3 sm:text-3xl">№ {{ state.certificateNum }}</div>
         </div>
 
       </div>
@@ -110,13 +68,10 @@ const decrement = () => {
         </p>
         <div class="flex flex-col space-y-3 sm:flex-row sm:flex sm:space-y-0 sm:space-x-3 sm:mb-3">
           <div>
-            <label for="bayerEmail" class="font-medium flex mb-1">Напишите Email:</label>
-            <input type="email"
-              class="w-full border rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-center text-lg py-2"
-              id="bayerEmail" placeholder="info@mail.ru" v-model="bayerEmail">
+            <EmailInput />
           </div>
           <div>
-            <PhoneInput labelText="Ваш номер телефона:" />
+            <PhoneInput />
           </div>
         </div>
         <p class="mb-0 leading-tight sm:mb-5">
@@ -152,7 +107,45 @@ const decrement = () => {
     </div>
   </form>
 </template>
+<script setup>
+import { ref, computed } from 'vue';
+import PhoneInput from './form_fields/PhoneInput.vue';
+import EmailInput from './form_fields/EmailInput.vue';
 
+const state = ref({
+  qnt: 1,
+  recipientName: 'Для Ярошенко Евсея Олеговича',
+  unitPrice: 3400,
+  certificateNum: 123456
+});
+
+const certificateSubTitle = computed(() =>
+  state.value.qnt === 1 ? 'на мастер-класс живописи' : `на ${state.value.qnt} мастер-класса живописи`
+);
+
+const totalPrice = computed(() => state.value.qnt * state.value.unitPrice);
+
+const certificateExpireDate = computed(() => {
+  const expireDate = new Date();
+  expireDate.setMonth(expireDate.getMonth() + 3);
+  // Adjust for the end-of-month issue by setting the date to the last day of the new month if it's too high
+  const lastDayOfNewMonth = new Date(expireDate.getFullYear(), expireDate.getMonth() + 1, 0).getDate();
+  if (expireDate.getDate() > lastDayOfNewMonth) {
+    expireDate.setDate(lastDayOfNewMonth);
+  }
+  const day = expireDate.getDate().toString().padStart(2, '0');
+  const month = (expireDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = expireDate.getFullYear();
+  return `${day}.${month}.${year}`;
+});
+
+const updateQuantity = (increment) => {
+  const newQuantity = state.value.qnt + (increment ? 1 : -1);
+  if (newQuantity >= 1 && newQuantity <= 4) {
+    state.value.qnt = newQuantity;
+  }
+};
+</script>
 <style>
 .lobster {
   font-family: "Lobster", sans-serif;
