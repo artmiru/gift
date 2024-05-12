@@ -14,28 +14,7 @@
             totalPrice }}<span class="text-2xl leading-12 text-stone-600 ml-1">₽</span></span>
         </div>
         <div class="sm:w-6/12 sm:flex sm:flex-col">
-          <h4 class="mb-3 text-lg font-medium">Количество</h4>
-          <div class="flex self-center">
-            <button @click="updateQuantity(false)" :disabled="state.qnt <= 1"
-              class="p-2 bg-gray-300 text-gray-800 disabled:bg-gray-200 rounded-l-lg h-12 w-12">
-              <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M5 12h14" />
-              </svg>
-            </button>
-            <input type="tel" v-model="state.qnt" readonly
-              class="p-1 text-4xl text-center border-t border-b border-stone-200 bg-white focus:outline-none h-12 w-12" />
-
-            <button @click="updateQuantity(true)" :disabled="state.qnt >= 4" class="rounded-r-lg p-2 bg-gray-300
-              text-gray-800 disabled:bg-gray-200 h-12 w-12" type="button">
-              <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M5 12h14m-7 7V5" />
-              </svg>
-            </button>
-          </div>
+          <Quantity @update:qnt="updateQuantity" />
         </div>
       </div>
     </div>
@@ -61,48 +40,46 @@
       </div>
     </div>
     <div class="p-5">
-      <div class="">
-        <h5 class="text-lg mb-1 font-medium">Данные покупателя</h5>
-        <p class="leading-tight mb-3">
-          Напишите адрес электронной почты, на него автоматически будет отправлен сертификат сразу после оплаты.
-        </p>
-        <div class="flex flex-col space-y-3 sm:flex-row sm:flex sm:space-y-0 sm:space-x-3 sm:mb-3">
-          <div>
-            <EmailInput />
-          </div>
-          <div>
-            <PhoneInput />
-          </div>
+      <h5 class="text-lg mb-1 font-medium">Данные покупателя</h5>
+      <p class="leading-tight mb-3">
+        Напишите адрес электронной почты, на него автоматически будет отправлен сертификат сразу после оплаты.
+      </p>
+      <div class="flex flex-col space-y-3 sm:flex-row sm:flex sm:space-y-0 sm:space-x-3 sm:mb-3">
+        <div>
+          <EmailInput :email="state.email" @update:email="handleEmailUpdate" />
         </div>
-        <p class="mb-0 leading-tight sm:mb-5">
-          Нажимая кнопку "Оплатить", вы соглашаетесь с <a href="#">политикой конфиденциальности</a>.
-        </p>
-        <div class="text-center">
-          <button type="button"
-            class="btn btn-lg btn-danger hover:bg-red-700 bg-red-600 text-white rounded text-lg font-medium px-10 py-3 mt-3 mb-10">Оплатить
-            {{ totalPrice }} ₽
-          </button>
+        <div>
+          <PhoneInput :phone="state.phone" @update:phone="handlePhoneUpdate" />
         </div>
-        <div class="flex justify-center mb-5">
-          <img style="
+      </div>
+      <p class="mb-0 leading-tight sm:mb-5">
+        Нажимая кнопку "Оплатить", вы соглашаетесь с <a href="#">политикой конфиденциальности</a>.
+      </p>
+      <div class="text-center">
+        <button type="button"
+          class="btn btn-lg btn-danger hover:bg-red-700 bg-red-600 text-white rounded text-lg font-medium px-10 py-3 mt-3 mb-10">Оплатить
+          {{ totalPrice }} ₽
+        </button>
+      </div>
+      <div class="flex justify-center mb-5">
+        <img style="
 								max-height: 24px;
 								" src="https://artmir.ru/img/mir-logo.svg" alt="логотип платежной системы" class="img-fluid me-3">
-          <img style="
+        <img style="
 								max-height: 24px;
 								" src="https://artmir.ru/img/SBP.svg" alt="логотип платежной системы" class="img-fluid me-1">
-          <span style="font-size: 28px;line-height: 22px;">СБП</span>
-          <svg width="36" height="28" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
-            xmlns="http://www.w3.org/2000/svg" fill="#000000" class="ms-2" style="margin-top: -2px;">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-              <g fill="none" fill-rule="evenodd">
-                <circle cx="7" cy="12" r="10" fill="#EA001B"></circle>
-                <circle cx="17" cy="12" r="10" fill="#FFA200" fill-opacity=".8"></circle>
-              </g>
+        <span style="font-size: 28px;line-height: 22px;">СБП</span>
+        <svg width="36" height="28" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
+          xmlns="http://www.w3.org/2000/svg" fill="#000000" class="ms-2" style="margin-top: -2px;">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <g fill="none" fill-rule="evenodd">
+              <circle cx="7" cy="12" r="10" fill="#EA001B"></circle>
+              <circle cx="17" cy="12" r="10" fill="#FFA200" fill-opacity=".8"></circle>
             </g>
-          </svg>
-        </div>
+          </g>
+        </svg>
       </div>
     </div>
   </form>
@@ -111,9 +88,12 @@
 import { ref, computed } from 'vue';
 import PhoneInput from './form_fields/PhoneInput.vue';
 import EmailInput from './form_fields/EmailInput.vue';
+import Quantity from './form_fields/QuantityInput.vue';
 
 const state = ref({
   qnt: 1,
+  phone: '',
+  email: '',
   recipientName: 'Для Ярошенко Евсея Олеговича',
   unitPrice: 3400,
   certificateNum: 123456
@@ -128,7 +108,6 @@ const totalPrice = computed(() => state.value.qnt * state.value.unitPrice);
 const certificateExpireDate = computed(() => {
   const expireDate = new Date();
   expireDate.setMonth(expireDate.getMonth() + 3);
-  // Adjust for the end-of-month issue by setting the date to the last day of the new month if it's too high
   const lastDayOfNewMonth = new Date(expireDate.getFullYear(), expireDate.getMonth() + 1, 0).getDate();
   if (expireDate.getDate() > lastDayOfNewMonth) {
     expireDate.setDate(lastDayOfNewMonth);
@@ -138,13 +117,19 @@ const certificateExpireDate = computed(() => {
   const year = expireDate.getFullYear();
   return `${day}.${month}.${year}`;
 });
+function updateQuantity(newQuantity) {
+  state.value.qnt = newQuantity;
+  console.log('Quantity:', newQuantity);
+}
+function handleEmailUpdate(newEmail) {
+  state.value.email = newEmail;
+  console.log('Updated email:', newEmail);
+}
 
-const updateQuantity = (increment) => {
-  const newQuantity = state.value.qnt + (increment ? 1 : -1);
-  if (newQuantity >= 1 && newQuantity <= 4) {
-    state.value.qnt = newQuantity;
-  }
-};
+function handlePhoneUpdate(newPhone) {
+  state.value.phone = newPhone;
+  console.log(newPhone);
+}
 </script>
 <style>
 .lobster {

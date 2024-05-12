@@ -1,10 +1,19 @@
 <template>
     <label for="phone" class="font-medium flex mb-1">Напишите телефон</label>
-    <input id="phone" v-phone type="tel" placeholder="+7 (___) ___-__-__"
-        class="w-full border rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-lg p-2" >
+    <input v-phone id="phone" type="tel" :value="phone" @change="onInput" placeholder="+7 (___) ___-__-__"
+        class="w-full border rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-lg p-2">
 </template>
 <script setup>
+import { defineProps, defineEmits } from 'vue';
 
+defineProps({
+  phone: String
+});
+const emit = defineEmits(['update:phone']);
+
+function onInput(event) {
+    emit('update:phone', event.target.value);
+}
 </script>
 <style>
 /* Общие стили для поля ввода */
